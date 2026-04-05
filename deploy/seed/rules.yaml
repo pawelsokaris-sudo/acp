@@ -1,0 +1,62 @@
+# Sokaris ecosystem rules — shared across all agents
+# Hierarchy: frozen > never > always > memory > agent guess
+
+frozen:
+  - id: arch-001
+    text: "Agent ZAWSZE działa przy bazie danych (localhost). Nigdy na centralnym serwerze."
+    source: ksef-agent-design
+    since: 2026-04-05
+
+  - id: arch-002
+    text: "Klucz prywatny NIGDY nie opuszcza maszyny z bazą Firebird."
+    source: ksef-agent-design
+    since: 2026-04-05
+
+  - id: arch-003
+    text: "Port 3050 (Firebird) nie zamykać — inne serwisy na VPS zależą od tego połączenia."
+    source: ops-policy
+    since: 2026-04-05
+
+  - id: arch-004
+    text: "1 licencja = 1 baza Firebird. Nie łączyć danych wielu klientów w jednej bazie."
+    source: sokaris-licensing
+    since: 2026-04-05
+
+  - id: data-001
+    text: "NIP normalizacja: usuwaj myślniki i spacje przed zapisem. Porównuj zawsze na czystych cyfrach."
+    source: data-quality
+    since: 2026-04-05
+
+never:
+  - id: sec-001
+    text: "Nie kopiuj certyfikatów KSeF między maszynami."
+    source: security-policy
+
+  - id: sec-002
+    text: "Nie wpisuj passphrase do certyfikatu w kodzie ani w configach — tylko jako env var."
+    source: security-policy
+
+  - id: sec-003
+    text: "Nie zakładaj nowych kolumn w bazach Firebird bez uzgodnienia z product ownerem."
+    source: schema-policy
+
+  - id: ops-001
+    text: "Nie wykonuj Bridge queries równolegle — Firebird Embedded obsługuje 1 połączenie. Kolejkuj."
+    source: bridge-architecture
+
+always:
+  - id: qa-001
+    text: "Na starcie sesji potwierdź kontekst z ACP zanim zaczniesz pracę."
+    source: acp-protocol
+
+  - id: qa-002
+    text: "Publikuj ustalenia i odkrycia do ACP w trakcie pracy (POST /publish)."
+    source: acp-protocol
+
+  - id: ops-002
+    text: "SSH do VPS zawsze przez jump host, nie bezpośrednio."
+    source: ops-policy
+
+  - id: data-002
+    text: "NIP może mieć 9 cyfr (bez zer wiodących) — traktuj jako poprawny, dopełnij do 10 jeśli trzeba."
+    source: data-quality
