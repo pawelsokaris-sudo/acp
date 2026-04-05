@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
 
 export interface AgentToken {
   token: string;
@@ -44,21 +45,42 @@ export function authMiddleware(tokenMap: Map<string, string>) {
     }
 
     const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      res.status(401).json({ error: 'Missing or invalid Authorization header. Expected: Bearer <token>' });
-      return;
-    }
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.substring(7);
+      const agentId = tokenMap.get(token);
 
-    const token = authHeader.substring(7);
-    const agentId = tokenMap.get(token);
+      if (agentId) {
+        (req as any).authenticatedAgent = agentId;
+        next();
+        return;
+      }
 
-    if (!agentId) {
+      // Bearer token provided but invalid
       res.status(403).json({ error: 'Invalid token' });
       return;
     }
 
-    // Attach authenticated agent_id to request for downstream use
-    (req as any).authenticatedAgent = agentId;
-    next();
+    // JWT cookie fallback (panel auth)
+    const jwtSecret = process.env.ACP_JWT_SECRET;
+    if (jwtSecret && req.headers.cookie) {
+      const cookies = req.headers.cookie.split(';').map(c => c.trim());
+      const sessionCookie = cookies.find(c => c.startsWith('acp_session='));
+      if (sessionCookie) {
+        const jwtToken = sessionCookie.substring('acp_session='.length);
+        try {
+          const payload = jwt.verify(jwtToken, jwtSecret) as { email?: string; type?: string };
+          if (payload.type === 'panel' && payload.email) {
+            (req as any).authenticatedAgent = 'panel:' + payload.email;
+            next();
+            return;
+          }
+        } catch {
+          // Invalid JWT, fall through to 401
+        }
+      }
+    }
+
+    res.status(401).json({ error: 'Missing or invalid Authorization header. Expected: Bearer <token>' });
+    return;
   };
 }
