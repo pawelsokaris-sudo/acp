@@ -12,6 +12,7 @@ export function startCommand(opts: { port?: string }) {
   }
 
   let port = parseInt(opts.port || '3075', 10);
+  let bind = '127.0.0.1';
   const configPath = path.join(acpDir, 'config.yaml');
   if (fs.existsSync(configPath)) {
     try {
@@ -19,15 +20,20 @@ export function startCommand(opts: { port?: string }) {
       if (config?.port && !opts.port) {
         port = config.port;
       }
+      if (config?.bind) {
+        bind = config.bind;
+      }
     } catch { /* use default */ }
   }
 
   const app = createApp(acpDir);
 
-  app.listen(port, '127.0.0.1', () => {
+  app.listen(port, bind, () => {
+    const tokenCount = Object.keys(process.env).filter(k => k.startsWith('ACP_TOKEN_')).length;
     console.log(`
 ACP Server v0.1.0
-  http://127.0.0.1:${port}
+  http://${bind}:${port}
+  Auth: ${tokenCount > 0 ? `enabled (${tokenCount} tokens)` : 'disabled (dev mode)'}
 
 Endpoints:
   POST /session/start   — agent joins, gets context
