@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACP Panel</title>
+  <link rel="stylesheet" href="panel.css">
+</head>
+<body>
+
+  <!-- Login Screen -->
+  <div id="login-screen" class="login-screen" style="display:none;">
+    <div class="login-box">
+      <h1 class="login-title">ACP Panel</h1>
+      <p class="login-subtitle">Agent Context Protocol</p>
+      <form id="login-form" autocomplete="off">
+        <input type="email" id="login-email" placeholder="your@email.com" required>
+        <button type="submit" class="btn btn-primary">Send Login Link</button>
+      </form>
+      <div id="login-message" class="login-message"></div>
+    </div>
+  </div>
+
+  <!-- App -->
+  <div id="app" style="display:none;">
+    <header class="app-header">
+      <div class="header-inner">
+        <div class="header-brand">ACP Panel</div>
+        <nav class="header-nav">
+          <button class="nav-btn active" data-screen="dashboard">Dashboard</button>
+          <button class="nav-btn" data-screen="context">Context Browser</button>
+          <button class="nav-btn" data-screen="onboarding">Model Onboarding</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+
+      <!-- Dashboard -->
+      <section id="dashboard" class="screen">
+        <div id="stats-grid" class="stats-grid"></div>
+        <div id="last-session-card" class="card"></div>
+        <h3 class="section-title">Active Blockers</h3>
+        <div id="blockers-list"></div>
+      </section>
+
+      <!-- Context Browser -->
+      <section id="context" class="screen" style="display:none;">
+        <div class="tab-bar">
+          <button class="tab-btn active" data-tab="rules">Rules</button>
+          <button class="tab-btn" data-tab="journal">Journal</button>
+          <button class="tab-btn" data-tab="environment">Environment</button>
+        </div>
+
+        <div id="tab-rules" class="tab-panel">
+          <div id="rules-content"></div>
+        </div>
+
+        <div id="tab-journal" class="tab-panel" style="display:none;">
+          <div class="journal-filters">
+            <select id="filter-type">
+              <option value="">All types</option>
+              <option value="discovery">discovery</option>
+              <option value="decision">decision</option>
+              <option value="blocker">blocker</option>
+              <option value="warning">warning</option>
+              <option value="session_start">session_start</option>
+              <option value="session_end">session_end</option>
+            </select>
+            <select id="filter-agent">
+              <option value="">All agents</option>
+            </select>
+          </div>
+          <div id="journal-timeline"></div>
+        </div>
+
+        <div id="tab-environment" class="tab-panel" style="display:none;">
+          <div id="env-content"></div>
+        </div>
+      </section>
+
+      <!-- Model Onboarding -->
+      <section id="onboarding" class="screen" style="display:none;">
+        <div class="onboarding-grid">
+          <div class="card">
+            <h3>Restore Context</h3>
+            <p class="card-desc">Generate a full context prompt to onboard a new model session.</p>
+            <button id="btn-gen-prompt" class="btn btn-primary">Generate Prompt</button>
+            <textarea id="prompt-output" class="prompt-textarea" readonly placeholder="Click Generate Prompt to fill this area..."></textarea>
+            <button id="btn-copy-prompt" class="btn btn-secondary" style="display:none;">Copy to Clipboard</button>
+          </div>
+          <div class="card">
+            <h3>Add Model</h3>
+            <p class="card-desc">Generate an API token for a new agent.</p>
+            <div class="input-row">
+              <input type="text" id="agent-name" placeholder="agent name (e.g. claude-code)">
+              <button id="btn-gen-token" class="btn btn-primary">Generate Token</button>
+            </div>
+            <pre id="token-output" class="token-output" style="display:none;"></pre>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="panel.js"></script>
+</body>
+</html>
