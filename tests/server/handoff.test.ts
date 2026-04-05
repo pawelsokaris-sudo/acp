@@ -7,7 +7,7 @@ import os from 'os';
 describe('Handoff scenario', () => {
   let tmpDir: string;
   let server: any;
-  const PORT = 13076;
+  const PORT = 13078;
 
   beforeAll(() => {
     tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'acp-handoff-'));
