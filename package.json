@@ -1,0 +1,35 @@
+{
+  "name": "acp",
+  "version": "0.1.0",
+  "description": "Agent Context Protocol — shared project context for AI agents",
+  "type": "module",
+  "bin": {
+    "acp": "./dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "context",
+    "mcp",
+    "coding-agent"
+  ],
+  "author": "Pawel Luczak <pawel.sokaris@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^14.0.3",
+    "express": "^5.2.1",
+    "js-yaml": "^4.1.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.5.2",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.2"
+  }
+}
