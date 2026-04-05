@@ -1,0 +1,21 @@
+# Example environment — copy to .acp/environment.yaml and customize
+
+services:
+  - name: api
+    host: localhost
+    port: 8080
+    notes: "Express.js backend"
+
+  - name: database
+    host: localhost
+    port: 5432
+    notes: "PostgreSQL 16"
+
+important_files:
+  - src/index.ts
+  - prisma/schema.prisma
+  - .env.example
+
+do_not_touch:
+  - migrations/
+  - scripts/deploy.sh

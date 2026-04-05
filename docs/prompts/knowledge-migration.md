@@ -13,7 +13,7 @@
 
 ```
 ACP Server:  [WPISZ_URL np. https://acp.actproof.io lub http://localhost:3075]
-Twój token:  [WPISZ_TOKEN np. acp_opus_Qe6nG4sB1cM]
+Twój token:  [WPISZ_TOKEN]
 Twoje ID:    [WPISZ_ID np. opus]
 ```
 

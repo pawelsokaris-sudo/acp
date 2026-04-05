@@ -24,9 +24,9 @@ Data stays on disk (`.acp/`). No traffic leaves the machine.
 Each project gets its own `.acp/` and its own server instance:
 
 ```
-sokaris-ksef-agent/.acp/    → npx acp start --port 3075
-helpdesk-v3/.acp/           → npx acp start --port 3076
-lr-engine/.acp/             → npx acp start --port 3077
+project-a/.acp/    → npx acp start --port 3075
+project-b/.acp/    → npx acp start --port 3076
+project-c/.acp/    → npx acp start --port 3077
 ```
 
 - `rules.yaml`, `environment.yaml` — committed to project repo (or not)

@@ -31,11 +31,11 @@ Two auth mechanisms in one server:
 
 ### Whitelist
 
-`ACP_ALLOWED_EMAILS=pawel.sokaris@gmail.com` in env vars.
+`ACP_ALLOWED_EMAILS=admin@example.com` in env vars.
 
 ### Implementation
 
-Reuse `magicAuth.js` from helpdesk-v3 (already built by Antek, in deployment on helpdesk.faktura-nt.pl).
+Magic link module with in-memory token store and SMTP integration.
 
 ## What stays public (no auth)
 

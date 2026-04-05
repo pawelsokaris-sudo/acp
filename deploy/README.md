@@ -1,4 +1,4 @@
-# ACP Deployment — acp.actproof.io
+# ACP Deployment Guide
 
 ## Setup
 
@@ -7,12 +7,12 @@ cd /opt/acp-server
 git pull origin master
 npm ci && npm run build
 
-# Copy seed data to .acp/
-cp deploy/seed/rules.yaml .acp/rules.yaml
-cp deploy/seed/environment.yaml .acp/environment.yaml
-cp deploy/seed/journal.jsonl .acp/journal.jsonl
+# Copy example seed data to .acp/ (or use your own)
+cp deploy/seed.example/rules.yaml .acp/rules.yaml
+cp deploy/seed.example/environment.yaml .acp/environment.yaml
+cp deploy/seed.example/journal.jsonl .acp/journal.jsonl
 
-# Config: bind to all interfaces for Caddy proxy
+# Config: bind to all interfaces for reverse proxy
 cat > .acp/config.yaml << 'EOF'
 version: "0.1"
 port: 3075
@@ -23,10 +23,14 @@ EOF
 ## Environment variables
 
 ```bash
-ACP_TOKEN_CC=acp_cc_Kx7mP9qR2vN:claude-code
-ACP_TOKEN_ANTEK=acp_antek_Yw3hL8dF5jT:antek
-ACP_TOKEN_OPUS=acp_opus_Qe6nG4sB1cM:opus
-ACP_TOKEN_PAWEL=acp_pawel_Zr9tU2wX7pA:pawel
+# Agent tokens — format: ACP_TOKEN_<LABEL>=<token>:<agent_id>
+ACP_TOKEN_AGENT1=<generate-random-token>:agent-name
+
+# Panel auth (optional)
+ACP_ALLOWED_EMAILS=admin@example.com
+ACP_JWT_SECRET=<generate-random-secret>
+ACP_SMTP_URL=http://localhost:4001/send
+ACP_SMTP_FROM=noreply@example.com
 ```
 
 ## Run
@@ -39,10 +43,5 @@ npx acp start
 
 ```bash
 curl -s http://localhost:3075/health
-curl -s -H "Authorization: Bearer acp_antek_Yw3hL8dF5jT" \
-  -X POST http://localhost:3075/session/start \
-  -H "Content-Type: application/json" \
-  -d '{"agent":{"id":"antek"},"scope":{"task":"verify"}}' | jq .
+# → {"status":"ok","version":"0.1"}
 ```
-
-Should return rules (13), memory.recent (6 seed events), environment (6 services).

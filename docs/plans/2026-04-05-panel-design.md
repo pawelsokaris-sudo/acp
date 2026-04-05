@@ -34,7 +34,7 @@ Caddy (static files)          Express (API)
 2. Wpisuje email → `POST /panel/auth/request`
 3. Backend sprawdza whitelist (`ACP_ALLOWED_EMAILS` env var)
 4. OK → generuje jednorazowy token (crypto.randomBytes, 15 min TTL, in-memory Map)
-5. Wysyła link emailem przez SMTP Worker (`localhost:4001`, from: `bok@sokaris.pl`)
+5. Wysyła link emailem przez SMTP Worker (`localhost:4001`, from: `noreply@example.com`)
 6. Paweł klika link → `GET /panel/auth/verify?token=xxx`
 7. Backend waliduje, usuwa token, ustawia JWT cookie (httpOnly, Secure, SameSite=Strict, 24h)
 8. Redirect → `/panel/`
@@ -50,15 +50,15 @@ Middleware sprawdza:
 ### Env vars
 
 ```
-ACP_ALLOWED_EMAILS=pawel.sokaris@gmail.com
+ACP_ALLOWED_EMAILS=admin@example.com
 ACP_JWT_SECRET=<random-string>
 ACP_SMTP_URL=http://localhost:4001/api/outbox/enqueue
-ACP_SMTP_FROM=bok@sokaris.pl
+ACP_SMTP_FROM=noreply@example.com
 ```
 
 ### Future
 
-- Docelowo: serwer pocztowy actproof.io (zamiast bok@sokaris.pl)
+- Customize SMTP sender for your domain
 - Docelowo: dedykowane narzędzie auth (po KSeF)
 
 ## Panel — 3 Screens
@@ -78,7 +78,7 @@ Po zalogowaniu. Pokazuje:
 
 **A) Przywróć kontekst** — generuje prompt do wklejenia:
 ```
-Jesteś agentem w projekcie Sokaris. Twój kontekst:
+You are an AI agent. Your project context from ACP:
 
 [Rules: pełna treść frozen/never/always]
 [Ostatnie 20 wpisów z journala]

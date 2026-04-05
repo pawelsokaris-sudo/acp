@@ -1,0 +1,30 @@
+# Example rules — copy to .acp/rules.yaml and customize for your project
+# Hierarchy: frozen > never > always > memory > agent guess
+
+frozen:
+  - id: arch-001
+    text: "Database migrations require review before applying"
+    source: team-policy
+    since: "2026-01-01"
+
+  - id: arch-002
+    text: "API versioning: never break existing v1 endpoints"
+    source: api-contract
+
+never:
+  - id: sec-001
+    text: "Never commit .env files, API keys, or credentials"
+    source: security-policy
+
+  - id: sec-002
+    text: "Never modify production database directly — use migrations"
+    source: ops-policy
+
+always:
+  - id: qa-001
+    text: "Run tests before committing"
+    source: ci-policy
+
+  - id: qa-002
+    text: "Publish discoveries and decisions to ACP during your session"
+    source: acp-protocol
